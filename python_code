@@ -1,0 +1,57 @@
+import random
+
+# list of words to choose from
+words = ['apple', 'banana', 'orange', 'pear', 'grape', 'kiwi', 'mango']
+
+# function to choose a random word from the list
+def choose_word(words):
+    return random.choice(words)
+
+# function to display the current state of the word
+def display_word(word, guesses):
+    for letter in word:
+        if letter in guesses:
+            print(letter, end=' ')
+        else:
+            print('_', end=' ')
+    print()
+
+# function to get a letter guess from the user
+def get_guess():
+    while True:
+        guess = input('Guess a letter: ').lower()
+        if len(guess) != 1:
+            print('Please enter a single letter.')
+        elif not guess.isalpha():
+            print('Please enter a letter.')
+        else:
+            return guess
+
+# function to play the game
+def play_game():
+    word = choose_word(words)
+    guesses = set()
+    num_wrong = 0
+    max_wrong = 6
+
+    while num_wrong < max_wrong and len(guesses) < len(set(word)):
+        display_word(word, guesses)
+        guess = get_guess()
+        if guess in guesses:
+            print('You already guessed that letter.')
+        elif guess in word:
+            guesses.add(guess)
+            print('Good guess!')
+        else:
+            num_wrong += 1
+            print('Sorry, that letter is not in the word.')
+            print(f'You have {max_wrong - num_wrong} guesses left.')
+
+    if num_wrong == max_wrong:
+        print('Sorry, you lost!')
+    else:
+        display_word(word, guesses)
+        print('Congratulations, you won!')
+
+# main program
+play_game()
